@@ -1,14 +1,12 @@
-//
-//  FirebaseGalleryAppApp.swift
-//  FirebaseGalleryApp
-//
-//  Created by Irina Saf on 2025-10-29.
-//
-
 import SwiftUI
+import FirebaseCore
 
 @main
 struct FirebaseGalleryAppApp: App {
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
