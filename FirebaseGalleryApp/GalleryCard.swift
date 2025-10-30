@@ -11,7 +11,7 @@ struct GalleryCard: View {
     var body: some View {
         VStack(spacing: 8) {
             ZStack(alignment: .bottomTrailing) {
-                // 🖼 Изображение
+                // 🖼 Images
                 Image(uiImage: item.image)
                     .resizable()
                     .scaledToFill()
@@ -63,7 +63,7 @@ struct GalleryCard: View {
                     )
             }
 
-            // 🏷 Название
+            // 🏷 Name
             Text(item.title)
                 .font(.headline)
                 .foregroundColor(.primary)
