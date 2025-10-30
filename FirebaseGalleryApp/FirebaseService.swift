@@ -71,9 +71,9 @@ class FirebaseService: ObservableObject {
                 self.dbRef.child(id).setValue(newItem) { error, _ in
                     DispatchQueue.main.async {
                         if let error = error {
-                            print("❌ Ошибка при сохранении: \(error.localizedDescription)")
+                            print("❌ Error when saving: \(error.localizedDescription)")
                         } else {
-                            print("✅ Фото успешно сохранено")
+                            print("✅ Image saved successfully")
                             self.fetchImages()
                         }
                     }
@@ -99,9 +99,9 @@ class FirebaseService: ObservableObject {
         dbRef.child(item.id).updateChildValues(updatedData) { error, _ in
             DispatchQueue.main.async {
                 if let error = error {
-                    print("❌ Ошибка обновления:", error.localizedDescription)
+                    print("❌ Error updated:", error.localizedDescription)
                 } else {
-                    print("✅ Фото обновлено успешно")
+                    print("✅ Photo updated successfully")
                     self.fetchImages()
                     completion()
                 }
@@ -110,5 +110,4 @@ class FirebaseService: ObservableObject {
     }
 
 }
-
 

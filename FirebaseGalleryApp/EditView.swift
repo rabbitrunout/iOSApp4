@@ -38,20 +38,20 @@ struct EditView: View {
                     .cornerRadius(12)
             }
             
-            Button("📷 Сменить фото") {
+            Button("📷 Change image") {
                 showPicker = true
             }
             .buttonStyle(.borderedProminent)
             
-            TextField("Новое название", text: $newTitle)
+            TextField("New type", text: $newTitle)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
             
             if isSaving {
-                ProgressView("Сохраняем...")
+                ProgressView("Saving...")
                     .progressViewStyle(.circular)
             } else {
-                Button("💾 Сохранить изменения") {
+                Button("💾 Save update") {
                     isSaving = true
                     firebase.updateImage(item: item, newTitle: newTitle, newImage: newImage) {
                         isSaving = false
@@ -76,9 +76,8 @@ struct EditView: View {
     let testFirebase = FirebaseService()
     let testItem = ImageItem(
         id: "preview-id",
-        title: "Пример фото",
+        title: "Sample image",
         image: UIImage(systemName: "photo")!
     )
     return EditView(firebase: testFirebase, item: testItem)
 }
-

@@ -9,82 +9,84 @@ struct GalleryCard: View {
     var onDelete: () -> Void
     
     var body: some View {
-        VStack(spacing: 8) {
-            ZStack(alignment: .bottomTrailing) {
-                // 🖼 Images
+        VStack(spacing: 10) {
+            ZStack {
+                // 🖼 Фото
                 Image(uiImage: item.image)
                     .resizable()
-                    .scaledToFill()
-                    .frame(width: 160, height: 180) // фиксированный размер карточек
-                    .clipped()
-                    .cornerRadius(18)
-                    .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
+                    .scaledToFit() // 👈 изображение центрируется без обрезания
+                    .frame(width: 160, height: 160)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.white.opacity(0.9))
+                    )
+                    .cornerRadius(20)
+                    .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 18)
-                            .stroke(isExpanded ? Color.accentColor.opacity(0.7) : .clear, lineWidth: 2)
-                            .animation(.easeInOut(duration: 0.2), value: isExpanded)
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(isExpanded ? Color.accentColor.opacity(0.8) : .clear, lineWidth: 2)
+                            .shadow(color: isExpanded ? Color.accentColor.opacity(0.5) : .clear, radius: 8)
+                            .animation(.easeInOut(duration: 0.25), value: isExpanded)
                     )
                     .onTapGesture {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                             onTap()
                         }
                     }
                     .overlay(
-                        // 🔘 Кнопки поверх фото
-                        HStack(spacing: 14) {
-                            Button {
-                                onEdit()
-                            } label: {
-                                Image(systemName: "pencil")
-                                    .font(.system(size: 18, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background(.ultraThinMaterial)
-                                    .clipShape(Circle())
+                        // 🔘 Кнопки (редактировать / удалить)
+                        HStack(spacing: 18) {
+                            Button(action: onEdit) {
+                                Image(systemName: "pencil.circle.fill")
+                                    .font(.system(size: 32))
+                                    .foregroundStyle(.blue, .white)
+                                    .shadow(radius: 2)
                             }
-
-                            Button {
-                                onDelete()
-                            } label: {
-                                Image(systemName: "trash")
-                                    .font(.system(size: 18, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background(.ultraThinMaterial)
-                                    .clipShape(Circle())
+                            
+                            Button(action: onDelete) {
+                                Image(systemName: "trash.circle.fill")
+                                    .font(.system(size: 32))
+                                    .foregroundStyle(.red, .white)
+                                    .shadow(radius: 2)
                             }
                         }
-                        .padding(10)
+                        .padding(12)
                         .opacity(isExpanded ? 1 : 0)
                         .scaleEffect(isExpanded ? 1 : 0.8)
                         .animation(.easeInOut(duration: 0.25), value: isExpanded)
                         , alignment: .bottomTrailing
                     )
             }
-
-            // 🏷 Name
+            .frame(width: 180, height: 180)
+            
+            // 🏷 Название
             Text(item.title)
                 .font(.headline)
                 .foregroundColor(.primary)
                 .lineLimit(1)
                 .frame(width: 160)
+                .padding(.bottom, 5)
         }
-        .frame(width: 170, height: 230)
+        .frame(width: 180, height: 240)
         .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color(UIColor.secondarySystemBackground))
-                .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 3)
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color.white.opacity(0.6))
+                .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 4)
         )
-        .padding(4)
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(isExpanded ? Color.accentColor.opacity(0.4) : .clear, lineWidth: 1)
+        )
+        .padding(6)
     }
 }
 
 #Preview {
     let testItem = ImageItem(
         id: "preview",
-        title: "Preview",
-        image: UIImage(systemName: "photo.fill")!
+        title: "Bugs Bunny",
+        image: UIImage(named: "example") ?? UIImage(systemName: "photo.fill")!
     )
     
     return GalleryCard(
@@ -97,9 +99,14 @@ struct GalleryCard: View {
     .padding()
     .background(
         LinearGradient(
-            colors: [.purple.opacity(0.3), .blue.opacity(0.2)],
-            startPoint: .top,
-            endPoint: .bottom
+            colors: [
+                Color.purple.opacity(0.2),
+                Color.blue.opacity(0.15),
+                Color.white.opacity(0.1)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
         )
+        .ignoresSafeArea()
     )
 }
